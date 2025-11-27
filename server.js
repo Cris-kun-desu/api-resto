@@ -18,7 +18,17 @@ app.get("/status", (req, res) => {
 app.get("/resto", async (req, res) => {
   try {
     const result = await db.query("SELECT * FROM resto ORDER BY id ASC");
-    res.json(result.rows);
+    const formattedData = result.rows.map((item) => ({
+      id: item.id,
+      details: item.details,
+      pricing: {
+        base_price: item.pricing.base_price,
+        tax: item.pricing.tax,
+      },
+      stock: item.stock,
+    }));
+
+    res.json(formattedData);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: err.message });
@@ -30,7 +40,17 @@ app.get("/resto/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const result = await db.query("SELECT * FROM resto WHERE id = $1", [id]);
-    res.json(result.rows);
+    const formattedData = result.rows.map((item) => ({
+      id: item.id,
+      details: item.details,
+      pricing: {
+        base_price: item.pricing.base_price,
+        tax: item.pricing.tax,
+      },
+      stock: item.stock,
+    }));
+
+    res.json(formattedData);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: err.message });
