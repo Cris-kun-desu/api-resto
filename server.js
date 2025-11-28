@@ -98,7 +98,7 @@ app.post("/auth/login", async (req, res, next) => {
 });
 
 // route get
-app.get("/resto", async (req, res) => {
+app.get("/menu", async (req, res) => {
   try {
     const result = await db.query("SELECT * FROM resto ORDER BY id ASC");
     const formattedData = result.rows.map((item) => ({
@@ -119,7 +119,7 @@ app.get("/resto", async (req, res) => {
 });
 
 // route get/id
-app.get("/resto/:id", async (req, res) => {
+app.get("/menu/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const result = await db.query("SELECT * FROM resto WHERE id = $1", [id]);
@@ -141,7 +141,7 @@ app.get("/resto/:id", async (req, res) => {
 });
 
 // route post
-app.post("/resto", authenticateToken, async (req, res) => {
+app.post("/menu", authenticateToken, async (req, res) => {
   try {
     const { details, pricing, stock } = req.body;
     if (!details || !pricing || !stock) {
@@ -160,7 +160,7 @@ app.post("/resto", authenticateToken, async (req, res) => {
 
 // route put/id
 app.put(
-  "/resto/:id",
+  "/menu/:id",
   [authenticateToken, authorizeRole("admin")],
   async (req, res) => {
     try {
@@ -197,7 +197,7 @@ app.put(
 
 // route delete/id
 app.delete(
-  "/resto/:id",
+  "/menu/:id",
   [authenticateToken, authorizeRole("admin")],
   async (req, res) => {
     try {
